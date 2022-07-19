@@ -6,9 +6,9 @@ import os
 import torch.nn as nn
 
 from typing import Dict, List, Tuple, Set
-from classifier.models.mobilenetv3 import MobileNetV3
-from classifier.models.resnet import ResNet
-from classifier.models.vit import Vit
+from models.mobilenetv3 import MobileNetV3
+from models.resnet import ResNet
+from models.vit import Vit
 from torch.utils.tensorboard import SummaryWriter
 
 

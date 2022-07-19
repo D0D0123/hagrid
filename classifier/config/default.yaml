@@ -1,6 +1,6 @@
 dataset:
-  annotations: /path/to/annotations/
-  dataset: /path/to/dataset
+  annotations: /home/souramandal/perceptron-posse-COMP9444/hagrid/ann_subsample
+  dataset: /home/souramandal/perceptron-posse-COMP9444/hagrid/subsamples/
   targets:
     - call
     - dislike
@@ -24,10 +24,10 @@ dataset:
   image_size: [224, 224]
   subset: 2000
 random_state: 42
-device: 'cpu'
-experiment_name: MobileNetV3_small
+device: 'cuda'
+experiment_name: perceptron-posse
 model:
-  name: 'MobileNetV3_small'  # 'MobileNetV3_large' or 'MobileNetV3_small' or 'ResNet18'
+  name: 'ResNet18'  # 'MobileNetV3_large' or 'MobileNetV3_small' or 'ResNet18'
   pretrained: False
   freezed: False
   start_epoch: 0
@@ -39,7 +39,7 @@ optimizer:
 scheduler:
   start_factor: 0.001
 train_params:
-  epochs: 100
+  epochs: 5
   num_workers: 16
   train_batch_size: 64
   test_batch_size: 64

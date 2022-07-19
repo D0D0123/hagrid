@@ -9,8 +9,8 @@ import torch.nn as nn
 
 from omegaconf import DictConfig, OmegaConf
 from torch.utils.tensorboard import SummaryWriter
-from classifier.metrics import get_metrics
-from classifier.utils import collate_fn, add_metrics_to_tensorboard, add_params_to_tensorboard, save_checkpoint
+from metrics import get_metrics
+from utils import collate_fn, add_metrics_to_tensorboard, add_params_to_tensorboard, save_checkpoint
 
 
 class TrainClassifier:

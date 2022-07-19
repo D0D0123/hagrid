@@ -9,7 +9,7 @@ import torch.utils.data
 from PIL import Image, ImageOps
 from typing import Dict, Tuple, List
 from omegaconf import DictConfig
-from classifier.preprocess import get_crop_from_bbox, Compose
+from preprocess import get_crop_from_bbox, Compose
 
 FORMATS = (".jpeg", ".jpg", ".jp2", ".png", ".tiff", ".jfif", ".bmp", ".webp", ".heic")
 

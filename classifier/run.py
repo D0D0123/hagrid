@@ -3,14 +3,14 @@ import argparse
 import torch.utils
 import torch.optim
 
-from classifier.dataset import GestureDataset
-from classifier.preprocess import get_transform
+from dataset import GestureDataset
+from preprocess import get_transform
 from omegaconf import OmegaConf, DictConfig
 from typing import Optional, Tuple
 from torch.utils.tensorboard import SummaryWriter
 
-from classifier.train import TrainClassifier
-from classifier.utils import set_random_state, build_model, collate_fn
+from train import TrainClassifier
+from utils import set_random_state, build_model, collate_fn
 
 
 logging.basicConfig(format="[LINE:%(lineno)d] %(levelname)-8s [%(asctime)s]  %(message)s", level=logging.INFO)
