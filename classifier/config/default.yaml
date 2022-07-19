@@ -1,24 +1,16 @@
 dataset:
-  annotations: /home/souramandal/perceptron-posse-COMP9444/hagrid/ann_subsample
-  dataset: /home/souramandal/perceptron-posse-COMP9444/hagrid/subsamples/
+  annotations: /home/souramandal/perceptron-posse-COMP9444/hagrid/annotations_train
+  dataset: /home/souramandal/perceptron-posse-COMP9444/hagrid/subsamples_train/
   targets:
     - call
     - dislike
     - fist
-    - four
     - like
     - mute
     - ok
-    - one
-    - palm
     - peace
-    - rock
     - stop
     - stop_inverted
-    - three
-    - two_up
-    - two_up_inverted
-    - three2
     - peace_inverted
     - no_gesture
   image_size: [224, 224]
