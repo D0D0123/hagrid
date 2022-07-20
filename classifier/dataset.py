@@ -11,6 +11,8 @@ from typing import Dict, Tuple, List
 from omegaconf import DictConfig
 from preprocess import get_crop_from_bbox, Compose
 
+from torchvision import transforms
+
 FORMATS = (".jpeg", ".jpg", ".jp2", ".png", ".tiff", ".jfif", ".bmp", ".webp", ".heic")
 
 
@@ -218,4 +220,13 @@ class GestureDataset(torch.utils.data.Dataset):
         if self.transform is not None:
             image_resized, label = self.transform(image_resized, label)
 
-        return image_resized, label
+        # added code to normalise image - perceptron-posse
+        mean, std = image_resized.mean([1, 2]), image_resized.std([1, 2])
+
+        transform_norm = transforms.Compose([
+            transforms.Normalize(mean, std)
+        ])
+
+        image_normalized = transform_norm(image_resized)
+
+        return image_normalized, label

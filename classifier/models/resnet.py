@@ -2,7 +2,8 @@ import torch
 
 from typing import Dict
 from torch import nn, Tensor
-from torchvision import models
+# from torchvision import models
+from .custom_resnet import resnet18
 
 
 class ResNet(nn.Module):
@@ -36,16 +37,18 @@ class ResNet(nn.Module):
 
         torchvision_model = None
 
-        if restype == "ResNet18":
-            torchvision_model = models.resnet18(pretrained=pretrained)
-        elif restype == "ResNet50":
-            torchvision_model = models.resnet50(pretrained=pretrained)
-        elif restype == "ResNet152":
-            torchvision_model = models.resnet152(pretrained=pretrained)
-        elif restype == "ResNext50":
-            torchvision_model = models.resnext50_32x4d(pretrained=pretrained)
-        elif restype == "ResNext101":
-            torchvision_model = models.resnext101_32x8d(pretrained=pretrained)
+        # if restype == "ResNet18":
+        #     # torchvision_model = models.resnet18(pretrained=pretrained)
+        # elif restype == "ResNet50":
+        #     torchvision_model = models.resnet50(pretrained=pretrained)
+        # elif restype == "ResNet152":
+        #     torchvision_model = models.resnet152(pretrained=pretrained)
+        # elif restype == "ResNext50":
+        #     torchvision_model = models.resnext50_32x4d(pretrained=pretrained)
+        # elif restype == "ResNext101":
+        #     torchvision_model = models.resnext101_32x8d(pretrained=pretrained)
+
+        torchvision_model = resnet18()
 
         if freezed:
             for param in torchvision_model.parameters():

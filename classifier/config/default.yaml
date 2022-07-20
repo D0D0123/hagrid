@@ -1,6 +1,6 @@
 dataset:
-  annotations: /home/souramandal/perceptron-posse-COMP9444/hagrid/annotations_train
-  dataset: /home/souramandal/perceptron-posse-COMP9444/hagrid/subsamples_train/
+  annotations: /home/souramandal/perceptron-posse-COMP9444/hagrid/annotations/
+  dataset: /home/souramandal/perceptron-posse-COMP9444/hagrid/subsamples/
   targets:
     - call
     - dislike
@@ -17,13 +17,13 @@ dataset:
   subset: 2000
 random_state: 42
 device: 'cuda'
-experiment_name: perceptron-posse
+experiment_name: perceptron-posse-normalized-3
 model:
   name: 'ResNet18'  # 'MobileNetV3_large' or 'MobileNetV3_small' or 'ResNet18'
   pretrained: False
   freezed: False
   start_epoch: 0
-  checkpoint: /path/to/chackpoint
+  checkpoint: /path/to/checkpoint # /home/souramandal/perceptron-posse-COMP9444/hagrid/classifier/experiments/perceptron-posse/best_model.pth
 optimizer:
   lr: 0.005
   momentum: 0.9
@@ -31,10 +31,10 @@ optimizer:
 scheduler:
   start_factor: 0.001
 train_params:
-  epochs: 5
-  num_workers: 16
+  epochs: 75
+  num_workers: 12
   train_batch_size: 64
-  test_batch_size: 64
+  test_batch_size: 20
   prefetch_factor: 16
 metric_params:
   metrics: ['accuracy', 'f1_score', 'precision', 'recall']
