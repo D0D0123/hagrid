@@ -134,11 +134,7 @@ class CustomBlock(nn.Module):
         x = self.relu(x)
         return x
 
-
 #####################################
-
-
-
 
 class Bottleneck(nn.Module):
     # Bottleneck in torchvision places the stride for downsampling at 3x3 convolution(self.conv2)
@@ -215,7 +211,7 @@ class CustomResNet(nn.Module):
             norm_layer = nn.BatchNorm2d
         self._norm_layer = norm_layer
 
-        self.inplanes = 64
+        self.in_channels = 64
         self.dilation = 1
         if replace_stride_with_dilation is None:
             # each element in the tuple indicates if we should replace
@@ -228,14 +224,14 @@ class CustomResNet(nn.Module):
             )
         self.groups = groups
         self.base_width = width_per_group
-        self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3, bias=False)
-        self.bn1 = norm_layer(self.inplanes)
+        self.conv1 = nn.Conv2d(3, self.in_channels, kernel_size=7, stride=2, padding=3, bias=False)
+        self.bn1 = norm_layer(self.in_channels)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
-        self.layer1 = self._make_layer(block, 64, layers[0])
-        self.layer2 = self._make_layer(block, 128, layers[1], stride=2, dilate=replace_stride_with_dilation[0])
-        self.layer3 = self._make_layer(block, 256, layers[2], stride=2, dilate=replace_stride_with_dilation[1])
-        self.layer4 = self._make_layer(block, 512, layers[3], stride=2, dilate=replace_stride_with_dilation[2])
+        self.layer1 = self._custom_make_layers(block, 64, layers[0], stride=1)
+        self.layer2 = self._custom_make_layers(block, 128, layers[1], stride=2)
+        self.layer3 = self._custom_make_layers(block, 256, layers[2], stride=2)
+        self.layer4 = self._custom_make_layers(block, 512, layers[3], stride=2)
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(512 * block.expansion, num_classes)
 
@@ -270,23 +266,23 @@ class CustomResNet(nn.Module):
         if dilate:
             self.dilation *= stride
             stride = 1
-        if stride != 1 or self.inplanes != planes * block.expansion:
+        if stride != 1 or self.in_channels != planes * block.expansion:
             downsample = nn.Sequential(
-                conv1x1(self.inplanes, planes * block.expansion, stride),
+                conv1x1(self.in_channels, planes * block.expansion, stride),
                 norm_layer(planes * block.expansion),
             )
 
         layers = []
         layers.append(
             block(
-                self.inplanes, planes, stride, downsample, self.groups, self.base_width, previous_dilation, norm_layer
+                self.in_channels, planes, stride, downsample, self.groups, self.base_width, previous_dilation, norm_layer
             )
         )
-        self.inplanes = planes * block.expansion
+        self.in_channels = planes * block.expansion
         for _ in range(1, blocks):
             layers.append(
                 block(
-                    self.inplanes,
+                    self.in_channels,
                     planes,
                     groups=self.groups,
                     base_width=self.base_width,
@@ -295,6 +291,40 @@ class CustomResNet(nn.Module):
                 )
             )
 
+        return nn.Sequential(*layers)
+    
+    def _custom_make_layers(
+                    self, 
+                    block,
+                    intermediate_channels,
+                    num_residual_blocks,
+                    stride):
+        """Function to make resnet layers based on given parameters"""
+        layers = []
+
+        # used if size of identity is incompatible with output of block
+        identity_downsample = nn.Sequential(
+            nn.Conv2d(self.in_channels, intermediate_channels, kernel_size=1, stride=stride),
+            nn.BatchNorm2d(intermediate_channels)
+        )
+
+        layers.append(
+            block(
+                self.in_channels, 
+                intermediate_channels, 
+                stride, 
+                identity_downsample)
+            )
+        
+        self.in_channels = intermediate_channels # 256
+        for i in range(num_residual_blocks - 1):
+            layers.append(
+                block(
+                    self.in_channels, 
+                    intermediate_channels
+                )
+            ) # 256 -> 64, 64*4 (256) again
+        
         return nn.Sequential(*layers)
 
     def _forward_impl(self, x: Tensor) -> Tensor:
