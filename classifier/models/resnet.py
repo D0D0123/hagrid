@@ -3,7 +3,7 @@ import torch
 from typing import Dict
 from torch import nn, Tensor
 # from torchvision import models
-from .custom_resnet import resnet18
+from .custom_resnet import resnet18, resnet10, resnet20
 
 
 class ResNet(nn.Module):
@@ -35,25 +35,38 @@ class ResNet(nn.Module):
 
         super().__init__()
 
-        torchvision_model = resnet18()
+        pposse_model = resnet18()
 
         if freezed:
-            for param in torchvision_model.parameters():
+            for param in pposse_model.parameters():
                 param.requires_grad = False
 
-        self.backbone = nn.Sequential(
-            torchvision_model.conv1,
-            torchvision_model.bn1,
-            torchvision_model.relu,
-            torchvision_model.maxpool,
-            torchvision_model.layer1,
-            torchvision_model.layer2,
-            torchvision_model.layer3,
-            torchvision_model.layer4,
-            torchvision_model.avgpool
-        )
+        self.backbone = None
+        if pposse_model.num_layers == 4:
+            self.backbone = nn.Sequential(
+                pposse_model.conv1,
+                pposse_model.bn1,
+                pposse_model.relu,
+                pposse_model.maxpool,
+                pposse_model.layer1,
+                pposse_model.layer2,
+                pposse_model.layer3,
+                pposse_model.layer4,
+                pposse_model.avgpool
+            )
+        elif pposse_model.num_layers == 3:
+            self.backbone = nn.Sequential(
+                pposse_model.conv1,
+                pposse_model.bn1,
+                pposse_model.relu,
+                pposse_model.maxpool,
+                pposse_model.layer1,
+                pposse_model.layer2,
+                pposse_model.layer3,
+                pposse_model.avgpool
+            )
 
-        num_features = torchvision_model.fc.in_features
+        num_features = pposse_model.fc.in_features
 
         self.classifier = nn.Sequential(
             nn.Linear(num_features, num_classes),

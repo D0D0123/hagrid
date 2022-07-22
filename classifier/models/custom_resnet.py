@@ -54,7 +54,7 @@ class CustomBlock(nn.Module):
 
 #####################################
 
-class CustomResNet(nn.Module):
+class PerceptronPosseResNet(nn.Module):
     def __init__(
         self,
         block: CustomBlock,
@@ -62,6 +62,8 @@ class CustomResNet(nn.Module):
         num_classes: int = 1000,
     ) -> None:
         super().__init__()
+        
+        self.num_layers = len(layers)
 
         self.in_channels = 64
         self.conv1 = nn.Conv2d(3, self.in_channels, kernel_size=7, stride=2, padding=3, bias=False)
@@ -71,9 +73,18 @@ class CustomResNet(nn.Module):
         self.layer1 = self._custom_make_layers(block, 64, layers[0], stride=1)
         self.layer2 = self._custom_make_layers(block, 128, layers[1], stride=2)
         self.layer3 = self._custom_make_layers(block, 256, layers[2], stride=2)
-        self.layer4 = self._custom_make_layers(block, 512, layers[3], stride=2)
-        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = nn.Linear(512, num_classes)
+        self.layer4 = None
+        self.avgpool = None
+        self.fc = None
+        if (self.num_layers == 4):
+            self.layer4 = self._custom_make_layers(block, 512, layers[3], stride=2)
+            self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+            self.fc = nn.Linear(512, num_classes)
+        elif (self.num_layers == 3):
+            self.layer4 = lambda x : x
+            self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+            self.fc = nn.Linear(256, num_classes)
+
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -143,18 +154,26 @@ def _resnet(
     block: CustomBlock,
     layers: List[int],
     **kwargs: Any,
-) -> CustomResNet:
-    model = CustomResNet(block, layers, **kwargs)
+) -> PerceptronPosseResNet:
+    model = PerceptronPosseResNet(block, layers, **kwargs)
     return model
 
 ### duplicate and customise to make custom resnet classes - perceptron-posse ###
 
-def resnet18(progress: bool = True, **kwargs: Any) -> CustomResNet:
-    r"""CustomResNet-18 model from
+def resnet18(**kwargs: Any) -> PerceptronPosseResNet:
+    r"""ResNet-18 model from
     `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_.
+    """
+    return _resnet(CustomBlock, [2, 2, 2, 2], **kwargs)
 
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-        progress (bool): If True, displays a progress bar of the download to stderr
+def resnet10(**kwargs: Any) -> PerceptronPosseResNet:
+    r"""ResNet-10 model based on
+    `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_.
     """
     return _resnet(CustomBlock, [1, 1, 1, 1], **kwargs)
+
+def resnet20(**kwargs: Any) -> PerceptronPosseResNet:
+    r"""ResNet-20 model based on
+    `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_.
+    """
+    return _resnet(CustomBlock, [3, 3, 3], **kwargs)
