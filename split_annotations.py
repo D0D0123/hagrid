@@ -6,15 +6,15 @@ from pprint import pprint
 for gesture in ["call", "peace", "peace_inverted", "like", "dislike", "ok", "mute", "stop", 
 "stop_inverted", "fist"]:
     print(f'current gesture: {gesture}')
-    f = open(f"annotations/{gesture}.json", "r")
+    f = open(f"annotations1/{gesture}.json", "r")
 
-    test_imgnames = os.listdir(f'subsamples_test/{gesture}/')
-    train_imgnames = os.listdir(f'subsamples_train/{gesture}/')
+    test_imgnames = os.listdir(f'subsamples_test1/{gesture}/')
+    train_imgnames = os.listdir(f'subsamples_train1/{gesture}/')
 
     data = json.load(f)
 
-    out_test_f = open(f"annotations_test/{gesture}.json", "w")
-    out_train_f = open(f"annotations_train/{gesture}.json", "w")
+    out_test_f = open(f"annotations_test1/{gesture}.json", "w")
+    out_train_f = open(f"annotations_train1/{gesture}.json", "w")
 
     out_test_dict = {}
     for imgname in sorted(test_imgnames):
