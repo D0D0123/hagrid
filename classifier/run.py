@@ -50,7 +50,7 @@ def _run_test(path_to_config: str):
     writer = SummaryWriter(log_dir=f"{experimnt_pth}/logs")
     writer.add_text(f'model/name', conf.model.name)
 
-    test_dataset = GestureDataset(is_train=False, conf=conf, transform=get_transform(), is_test=True)
+    test_dataset = GestureDataset(is_train=False, conf=conf, transform=get_transform(), is_test=True, preprocess_option=None)
 
     logging.info(f"Current device: {conf.device}")
 
@@ -79,8 +79,8 @@ def _run_train(path_to_config: str) -> None:
     conf = OmegaConf.load(path_to_config)
     model = _initialize_model(conf)
 
-    train_dataset = GestureDataset(is_train=True, conf=conf, transform=get_transform())
-    test_dataset = GestureDataset(is_train=False, conf=conf, transform=get_transform())
+    train_dataset = GestureDataset(is_train=True, conf=conf, transform=get_transform(), preprocess_option=None)
+    test_dataset = GestureDataset(is_train=False, conf=conf, transform=get_transform(), preprocess_option=None)
 
     logging.info(f"Current device: {conf.device}")
     TrainClassifier.train(model, conf, train_dataset, test_dataset)

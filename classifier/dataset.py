@@ -26,7 +26,8 @@ class GestureDataset(torch.utils.data.Dataset):
             is_train: bool,
             conf: DictConfig,
             transform: Compose = None,
-            is_test: bool = False
+            is_test: bool = False,
+            preprocess_option: str = None
     ) -> None:
 
         """
@@ -46,6 +47,7 @@ class GestureDataset(torch.utils.data.Dataset):
         self.conf = conf
         self.transform = transform
         self.is_train = is_train
+        self.preprocess_option = preprocess_option
 
         self.labels = {label: num for (label, num) in
                        zip(self.conf.dataset.targets, range(len(self.conf.dataset.targets)))}
@@ -221,12 +223,22 @@ class GestureDataset(torch.utils.data.Dataset):
             image_resized, label = self.transform(image_resized, label)
 
         # added code to normalise image - perceptron-posse
-        mean, std = image_resized.mean([1, 2]), image_resized.std([1, 2])
+        if self.preprocess_option == 'normalize':
+            mean, std = image_resized.mean([1, 2]), image_resized.std([1, 2])
+            transform_norm = transforms.Normalize(mean, std)
+            image_normalized = transform_norm(image_resized)
+            return image_normalized, label
+        
+        elif self.preprocess_option == 'grayscale':
+            transform_grayscale = transforms.Grayscale(num_output_channels=3)
+            image_grayscaled = transform_grayscale(image_resized)
+            return image_grayscaled, label
+        
+        elif self.preprocess_option == None:
+            return image_resized, label
+        
+        else:
+            raise RuntimeError("Incompatible argument for preprocess_option")
 
-        transform_norm = transforms.Compose([
-            transforms.Normalize(mean, std)
-        ])
 
-        image_normalized = transform_norm(image_resized)
-
-        return image_normalized, label
+        
