@@ -1,6 +1,6 @@
 dataset:
-  annotations: /home/souramandal/perceptron-posse-COMP9444/hagrid/annotations/
-  dataset: /home/souramandal/perceptron-posse-COMP9444/hagrid/subsamples/
+  annotations: /home/souramandal/perceptron-posse-COMP9444/hagrid/annotations_test1/
+  dataset: /home/souramandal/perceptron-posse-COMP9444/hagrid/subsamples_test1/
   targets:
     - call
     - dislike
@@ -17,13 +17,13 @@ dataset:
   subset: 2000
 random_state: 42
 device: 'cuda'
-experiment_name: perceptron-posse-normalized-3
+experiment_name: perceptron-posse-grayscaled-resnet20-testing
 model:
-  name: 'ResNet18'  # 'MobileNetV3_large' or 'MobileNetV3_small' or 'ResNet18'
+  name: 'ResNet20'  # 'ResNet18' or 'ResNet10' or 'ResNet20'
   pretrained: False
   freezed: False
   start_epoch: 0
-  checkpoint: /path/to/checkpoint # /home/souramandal/perceptron-posse-COMP9444/hagrid/classifier/experiments/perceptron-posse/best_model.pth
+  checkpoint: /home/souramandal/perceptron-posse-COMP9444/hagrid/classifier/experiments/perceptron-posse-grayscaled-resnet20/best_model.pth # change checkpoint for testing run
 optimizer:
   lr: 0.005
   momentum: 0.9

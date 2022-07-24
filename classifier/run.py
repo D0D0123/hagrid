@@ -48,7 +48,7 @@ def _run_test(path_to_config: str):
     writer = SummaryWriter(log_dir=f"{experimnt_pth}/logs")
     writer.add_text(f'model/name', conf.model.name)
 
-    test_dataset = GestureDataset(is_train=False, conf=conf, transform=get_transform(), is_test=True, preprocess_option=None)
+    test_dataset = GestureDataset(is_train=False, conf=conf, transform=get_transform(), is_test=True, preprocess_option='grayscale')
 
     logging.info(f"Current device: {conf.device}")
 
@@ -61,7 +61,7 @@ def _run_test(path_to_config: str):
         prefetch_factor=conf.train_params.prefetch_factor,
     )
 
-    TrainClassifier.eval(model, conf, 74, test_dataloader, writer, "test")
+    TrainClassifier.eval(model, conf, 0, test_dataloader, writer, "test")
 
 
 def _run_train(path_to_config: str) -> None:
@@ -77,8 +77,8 @@ def _run_train(path_to_config: str) -> None:
     conf = OmegaConf.load(path_to_config)
     model = _initialize_model(conf)
 
-    train_dataset = GestureDataset(is_train=True, conf=conf, transform=get_transform(), preprocess_option=None)
-    test_dataset = GestureDataset(is_train=False, conf=conf, transform=get_transform(), preprocess_option=None)
+    train_dataset = GestureDataset(is_train=True, conf=conf, transform=get_transform(), preprocess_option='grayscale')
+    test_dataset = GestureDataset(is_train=False, conf=conf, transform=get_transform(), preprocess_option='grayscale')
 
     logging.info(f"Current device: {conf.device}")
     TrainClassifier.train(model, conf, train_dataset, test_dataset)
