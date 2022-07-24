@@ -148,6 +148,7 @@ def build_model(
     }
 
     model = models[model_name]
+    print(f' ---------- Chosen Model: {model_name} ---------- ')
 
     if checkpoint is not None:
         checkpoint = os.path.expanduser(checkpoint)
