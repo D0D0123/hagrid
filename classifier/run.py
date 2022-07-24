@@ -27,8 +27,6 @@ def _initialize_model(conf: DictConfig):
         num_classes=num_classes,
         checkpoint=conf.model.get("checkpoint", None),
         device=conf.device,
-        pretrained=conf.model.pretrained,
-        freezed=conf.model.freezed
     )
 
     return model
@@ -63,7 +61,7 @@ def _run_test(path_to_config: str):
         prefetch_factor=conf.train_params.prefetch_factor,
     )
 
-    TrainClassifier.eval(model, conf, 0, test_dataloader, writer, "test")
+    TrainClassifier.eval(model, conf, 74, test_dataloader, writer, "test")
 
 
 def _run_train(path_to_config: str) -> None:

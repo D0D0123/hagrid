@@ -110,14 +110,13 @@ def save_checkpoint(
     }
     torch.save(checkpoint_dict, checkpoint_path)
 
+# perceptron-posse
 
 def build_model(
         model_name: str,
         num_classes: int,
         device: str,
         checkpoint: str = None,
-        pretrained: bool = False,
-        freezed: bool = False
 ) -> nn.Module:
     """
     Build modela and load checkpoint
@@ -132,52 +131,19 @@ def build_model(
         Path to model checkpoint
     device : str
         Cpu or CUDA device
-    pretrained : false
-        Use pretrained model
-    freezed : false
-        Freeze model layers
     """
     models = {
         'ResNet18': ResNet(
             num_classes=num_classes,
             restype='ResNet18',
-            pretrained=pretrained,
-            freezed=freezed
         ),
-        'ResNext50': ResNet(
+        'ResNet10': ResNet(
             num_classes=num_classes,
-            restype='ResNext50',
-            pretrained=pretrained,
-            freezed=freezed
+            restype='ResNet10',
         ),
-        'ResNext101': ResNet(
+        'ResNet20': ResNet(
             num_classes=num_classes,
-            restype='ResNext101',
-            pretrained=pretrained,
-            freezed=freezed
-        ),
-        'ResNet152': ResNet(
-            num_classes=num_classes,
-            restype='ResNet152',
-            pretrained=pretrained,
-            freezed=freezed
-        ),
-        'MobileNetV3_large': MobileNetV3(
-            num_classes=num_classes,
-            size='large',
-            pretrained=pretrained,
-            freezed=freezed
-        ),
-        'MobileNetV3_small': MobileNetV3(
-            num_classes=num_classes,
-            size='small',
-            pretrained=pretrained,
-            freezed=freezed
-        ),
-        'Vitb32': Vit(
-            num_classes=num_classes,
-            pretrained=pretrained,
-            freezed=freezed
+            restype='ResNet20',
         ),
     }
 

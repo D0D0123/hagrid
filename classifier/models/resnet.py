@@ -5,41 +5,38 @@ from torch import nn, Tensor
 # from torchvision import models
 from .custom_resnet import resnet18, resnet10, resnet20
 
+# perceptron-posse
 
 class ResNet(nn.Module):
     """
-    Torchvision two headed ResNet and ResNext configuration
+    Custom two headed ResNet configuration
     """
 
     def __init__(
             self,
             num_classes: int,
             restype: str = "ResNet18",
-            pretrained: bool = False,
-            freezed: bool = False
     ) -> None:
         """
-        Torchvision two headed ResNet and ResNext configuration
+        Custom two headed ResNet configuration
 
         Parameters
         ----------
         num_classes : int
             Number of classes for each task
-        restype : str
-            Type of ResNet
-        pretrained : bool
-            Using pretrained weights or not
         freezed : bool
             Freezing model parameters or not
         """
 
         super().__init__()
 
-        pposse_model = resnet18()
-
-        if freezed:
-            for param in pposse_model.parameters():
-                param.requires_grad = False
+        pposse_model = None
+        if restype == 'ResNet18':
+            pposse_model = resnet18()
+        elif restype == 'ResNet10':
+            pposse_model = resnet10()
+        elif restype == 'ResNet20':
+            pposse_model = resnet20()
 
         self.backbone = None
         if pposse_model.num_layers == 4:
