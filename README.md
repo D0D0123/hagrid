@@ -1,3 +1,64 @@
+# Perceptron-Posse Setup Steps
+
+1. Install conda on your preferred OS following this [installation guide](https://docs.conda.io/projects/conda/en/latest/user-guide/install/windows.html).
+2. Run `git clone git@github.com:D0D0123/hagrid.git`
+3. Follow the Python environment [setup steps](#installation). Your `hagrid/` folder will now contain a conda environment in which to run your code, every time you start a new terminal you will need to run `conda activate gestures`
+4. Download the .zip files from [perceptron-posse-datasets](https://unsw-my.sharepoint.com/:f:/g/personal/z5311640_ad_unsw_edu_au/EqDQYj7q93VHmyu3TjGcx_MB2_s_oR2NFBRCo5x_NN1J2A?e=ICpc9p), move them into `hagrid/`, and then unzip them. You should now have 4 new folders: `subsamples_train, subsamples_test, annotations_train, annotations_test`
+
+5. Open the `hagrid/classifier/config/default.yaml`, and change the following parameters as needed:
+
+```yaml
+dataset:
+  annotations: /path/to/hagrid/annotations_train/ # change path
+  dataset: /path/to/hagrid/subsamples_train/ # change path
+  targets:
+    - call
+    - dislike
+    - fist
+    - like
+    - mute
+    - ok
+    - peace
+    - stop
+    - stop_inverted
+    - peace_inverted
+    - no_gesture
+  image_size: [224, 224]
+  subset: 2000
+random_state: 42
+device: 'cpu' # change to 'cuda' if using GPU
+experiment_name: experiment_name # change to what you want
+model:
+  name: 'ResNet18'  # 'ResNet18' or 'ResNet10' or 'ResNet20'
+  pretrained: False
+  freezed: False
+  start_epoch: 0
+  checkpoint: /path/to/hagrid/classifier/experiments/experiment_name/best_model.pth # only matters when testing
+optimizer:
+  lr: 0.005
+  momentum: 0.9
+  weight_decay: 0.0005
+scheduler:
+  start_factor: 0.001
+train_params:
+  epochs: 5
+  num_workers: 16 # make smaller if issues arise
+  train_batch_size: 64
+  test_batch_size: 64
+  prefetch_factor: 16
+metric_params:
+  metrics: ['accuracy', 'f1_score', 'precision', 'recall']
+  average: 'weighted'
+```
+
+6. Run `cd classifier/ && python run.py --command 'train' --path_to_config ./config/default.yaml`
+
+7. After it finishes running, check the `classifier/` folder for a folder called `experiments/experiment_name/`, which should contain a number of .pth files
+
+8. Run `tensorboard --logdir=experiments`, and then open `localhost:6006` to see the logged metrics visualised
+
+<hr>
+
 # HaGRID - HAnd Gesture Recognition Image Dataset
 
 ![hagrid](images/hagrid.jpg)

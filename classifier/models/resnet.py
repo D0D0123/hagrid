@@ -2,7 +2,6 @@ import torch
 
 from typing import Dict
 from torch import nn, Tensor
-# from torchvision import models
 from .custom_resnet import resnet18, resnet10, resnet20
 
 # perceptron-posse

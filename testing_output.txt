@@ -1,0 +1,10 @@
+python3 run.py --command 'test' --path_to_config ./config/default.yaml
+ ---------- Chosen Model: ResNet18 ---------- 
+[LINE:129] INFO     [2022-07-24 21:32:59,234]  Databse for no_gesture not found
+[LINE:53] INFO     [2022-07-24 21:32:59,235]  Current device: cuda
+/home/souramandal/perceptron-posse-COMP9444/hagrid/classifier/train.py:70: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at  ../torch/csrc/utils/tensor_new.cpp:210.)
+  torch.tensor(targets[target]), torch.tensor(predicts[target]), conf, epoch, mode,
+[LINE:32] INFO     [2022-07-24 21:33:04,436]  valid: metrics for gesture
+[LINE:33] INFO     [2022-07-24 21:33:04,436]  {'accuracy': 0.906667, 'f1_score': 0.906704, 'precision': 0.907941, 'recall': 0.906667}
+[LINE:32] INFO     [2022-07-24 21:33:04,590]  valid: metrics for leading_hand
+[LINE:33] INFO     [2022-07-24 21:33:04,593]  {'accuracy': 0.937333, 'f1_score': 0.93734, 'precision': 0.937361, 'recall': 0.937333}
