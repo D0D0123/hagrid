@@ -33,7 +33,7 @@ model:
   pretrained: False
   freezed: False
   start_epoch: 0
-  checkpoint: /path/to/hagrid/classifier/experiments/experiment_name/best_model.pth # only matters when testing
+  checkpoint: # /path/to/hagrid/classifier/experiments/experiment_name/best_model.pth # only matters when testing
 optimizer:
   lr: 0.005
   momentum: 0.9
@@ -41,7 +41,7 @@ optimizer:
 scheduler:
   start_factor: 0.001
 train_params:
-  epochs: 5
+  epochs: 5 # change as needed
   num_workers: 16 # make smaller if issues arise
   train_batch_size: 64
   test_batch_size: 64
