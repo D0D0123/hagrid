@@ -55,7 +55,7 @@ metric_params:
 
 7. Run `cd classifier/ && python run.py --command 'train' --path_to_config ./config/default.yaml`
 
-8. After it finishes running, check the `classifier/` folder for a folder called `experiments/experiment_name/`, which should contain a number of .pth files
+8. After it finishes running, check the `classifier/experiments/experiment_name/` folder, which should contain a `logs/` folder and a number of .pth files
 
 9. Run `tensorboard --logdir=experiments`, and then open `localhost:6006` to see the logged metrics visualised
 
