@@ -51,11 +51,13 @@ metric_params:
   average: 'weighted'
 ```
 
-6. Run `cd classifier/ && python run.py --command 'train' --path_to_config ./config/default.yaml`
+6. Change the *preprocess_option* argument in `_run_test()` and `_run_train()` in `classifier/run.py` to either *'normalize'*, *'grayscale'* or *None*, if needed.
 
-7. After it finishes running, check the `classifier/` folder for a folder called `experiments/experiment_name/`, which should contain a number of .pth files
+7. Run `cd classifier/ && python run.py --command 'train' --path_to_config ./config/default.yaml`
 
-8. Run `tensorboard --logdir=experiments`, and then open `localhost:6006` to see the logged metrics visualised
+8. After it finishes running, check the `classifier/` folder for a folder called `experiments/experiment_name/`, which should contain a number of .pth files
+
+9. Run `tensorboard --logdir=experiments`, and then open `localhost:6006` to see the logged metrics visualised
 
 <hr>
 
